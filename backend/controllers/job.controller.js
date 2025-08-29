@@ -12,11 +12,20 @@ export const postJob = async (req, res) => {
                 success: false
             })
         };
+        // Validate and convert salary to number
+        const salaryNumber = Number(salary);
+        if (isNaN(salaryNumber)) {
+            return res.status(400).json({
+                message: "Salary must be a valid number.",
+                success: false
+            });
+        }
+        
         const job = await Job.create({
             title,
             description,
             requirements: requirements.split(","),
-            salary: Number(salary),
+            salary: salaryNumber,
             location,
             jobType,
             experienceLevel: experience,
